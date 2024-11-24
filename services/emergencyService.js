@@ -2,8 +2,14 @@ const Emergency = require("../models/emergency");
 const { setupVoiceCall } = require("./voiceCallService");
 
 async function initiateEmergency(data) {
-  const emergency = await Emergency.create(data);
-  return emergency;
+  try {
+    const emergency = await Emergency.create(data);
+    console.log("Emergency created", emergency);
+    return emergency;
+  } catch (error) {
+    console.error("Error creating emergency", error);
+    throw error;
+  }
 }
 
 async function updateEmergency(data) {
@@ -28,9 +34,21 @@ async function dispatchAmbulance(data) {
   return emergency;
 }
 
+async function getAllEmergencies() {
+  const emergencies = await Emergency.findAll();
+  return emergencies;
+}
+
+async function getEmergencyById(id) {
+  const emergency = await Emergency.findByPk(id);
+  return emergency;
+}
+
 module.exports = {
   initiateEmergency,
   updateEmergency,
   acceptEmergency,
   dispatchAmbulance,
+  getAllEmergencies,
+  getEmergencyById,
 };

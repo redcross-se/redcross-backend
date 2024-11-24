@@ -7,16 +7,18 @@ const Emergency = sequelize.define("Emergency", {
     allowNull: false,
   },
   location: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON,
     allowNull: false,
   },
   type: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "N/A",
   },
   additionalInfo: {
     type: DataTypes.TEXT,
     allowNull: true,
+    defaultValue: "N/A",
   },
   status: {
     type: DataTypes.ENUM("pending", "accepted", "dispatched"),

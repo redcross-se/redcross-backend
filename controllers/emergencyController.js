@@ -3,13 +3,16 @@ const {
   updateEmergency,
   acceptEmergency,
   dispatchAmbulance,
+  getAllEmergencies,
+  getEmergencyById,
 } = require("../services/emergencyService");
 
 function setupSocket(io) {
   io.on("connection", (socket) => {
-    console.log("New client connected");
+    console.log("New client connected", socket.id);
 
     socket.on("initiateEmergency", async (data) => {
+      console.log("Initiate emergency", data);
       try {
         const emergency = await initiateEmergency(data);
         io.emit("newEmergency", emergency); // Notify all responders
@@ -41,6 +44,15 @@ function setupSocket(io) {
       try {
         const dispatchInfo = await dispatchAmbulance(data);
         io.emit("ambulanceDispatched", dispatchInfo); // Notify user
+      } catch (error) {
+        socket.emit("error", { message: error.message });
+      }
+    });
+
+    socket.on("getAllEmergencies", async () => {
+      try {
+        const emergencies = await getAllEmergencies();
+        socket.emit("allEmergencies", emergencies);
       } catch (error) {
         socket.emit("error", { message: error.message });
       }
