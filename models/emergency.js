@@ -28,6 +28,10 @@ const Emergency = sequelize.define("Emergency", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  roomId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Emergency;

@@ -10,7 +10,8 @@ function authenticateJWT(req, res, next) {
 
   jwt.verify(token, authConfig.jwtSecret, (err, user) => {
     if (err) {
-      return res.sendStatus(403);
+      console.log("Error verifying token", err);
+      return res.sendStatus(401);
     }
     req.user = user;
     next();

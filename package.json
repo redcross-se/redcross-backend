@@ -19,9 +19,12 @@
     "mysql2": "^3.11.4",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "peer": "^1.0.2",
+    "peerjs": "^1.5.4",
     "sequelize": "^6.37.5",
     "simple-peer": "^9.11.1",
     "socket.io": "^4.8.1",
+    "stream-chat": "^8.45.2",
     "twilio": "^5.3.6"
   },
   "devDependencies": {

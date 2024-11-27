@@ -1,9 +1,10 @@
 const Emergency = require("../models/emergency");
-const { setupVoiceCall } = require("./voiceCallService");
+const { setupVoiceCall, createRoom } = require("./voiceCallService");
 
 async function initiateEmergency(data) {
   try {
-    const emergency = await Emergency.create(data);
+    const roomId = await createRoom();
+    const emergency = await Emergency.create({ ...data, roomId });
     console.log("Emergency created", emergency);
     return emergency;
   } catch (error) {
@@ -13,16 +14,16 @@ async function initiateEmergency(data) {
 }
 
 async function updateEmergency(data) {
-  const emergency = await Emergency.update(data, { where: { id: data.id } });
-  return emergency;
+  await Emergency.update(data, { where: { id: data.id } });
+  const updatedEmergency = await Emergency.findByPk(data.id);
+  return updatedEmergency;
 }
 
 async function acceptEmergency(data) {
   const emergency = await Emergency.update(
     { status: "accepted", responderId: data.responderId },
-    { where: { id: data.id } }
+    { where: { id: data.emergencyId } }
   );
-  setupVoiceCall(data.roomId);
   return emergency;
 }
 

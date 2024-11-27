@@ -10,9 +10,12 @@ const userRoutes = require("./routes/userRoutes");
 const cors = require("cors");
 const http = require("http");
 const socketIo = require("socket.io");
+const volunteerRoutes = require("./routes/volunteerRoutes");
 const { setupSocket } = require("./controllers/emergencyController");
 const { setupVoiceCall } = require("./services/voiceCallService");
+const dotenv = require("dotenv");
 const app = express();
+dotenv.config();
 
 app.use(express.json());
 
@@ -24,31 +27,28 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
-    methods: ["GET", "POST"],
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/supervisor", supervisorRoutes);
 app.use("/user", userRoutes);
+app.use("/volunteer", volunteerRoutes);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"],
-    methods: ["GET", "POST"],
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });

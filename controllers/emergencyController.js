@@ -8,8 +8,24 @@ const {
 } = require("../services/emergencyService");
 
 function setupSocket(io) {
+  const responderPeerMap = {};
+  const initiatorPeerMap = {};
+
   io.on("connection", (socket) => {
-    console.log("New client connected", socket.id);
+
+    socket.on("registerResponderPeer", ({ peerId, emergencyId }) => {
+      responderPeerMap[emergencyId] = peerId;
+      console.log(
+        `Registered responder peer ID: ${peerId} for emergency: ${emergencyId}`
+      );
+    });
+
+    socket.on("registerInitiatorPeer", ({ peerId, emergencyId }) => {
+      initiatorPeerMap[emergencyId] = peerId;
+      console.log(
+        `Registered initiator peer ID: ${peerId} for emergency: ${emergencyId}`
+      );
+    });
 
     socket.on("initiateEmergency", async (data) => {
       console.log("Initiate emergency", data);
@@ -22,9 +38,11 @@ function setupSocket(io) {
     });
 
     socket.on("updateEmergency", async (data) => {
+      console.log("Update emergency to  ", data);
       try {
         const updatedEmergency = await updateEmergency(data);
-        io.emit("emergencyUpdated", updatedEmergency); // Notify all responders
+        console.log("Updated emergency", updatedEmergency.dataValues);
+        io.emit("emergencyUpdated", updatedEmergency.dataValues); // Notify all responders
       } catch (error) {
         socket.emit("error", { message: error.message });
       }
@@ -32,9 +50,17 @@ function setupSocket(io) {
 
     socket.on("acceptEmergency", async (data) => {
       try {
+        io.emit("emergencyAccepting", data);
         const emergency = await acceptEmergency(data);
-        io.emit("emergencyAccepted", emergency); // Notify user and responders
-        io.to(data.roomId).emit("startVoiceCall", { roomId: data.roomId });
+        io.emit("emergencyAccepted", emergency.dataValues); // Notify user and responders
+
+        // Retrieve the responder's peer ID
+        const responderPeerId = responderPeerMap[data.emergencyId];
+        if (responderPeerId) {
+          socket
+            .to(data.initiatorSocketId)
+            .emit("peerId", { peerId: responderPeerId });
+        }
       } catch (error) {
         socket.emit("error", { message: error.message });
       }
@@ -53,6 +79,15 @@ function setupSocket(io) {
       try {
         const emergencies = await getAllEmergencies();
         socket.emit("allEmergencies", emergencies);
+      } catch (error) {
+        socket.emit("error", { message: error.message });
+      }
+    });
+
+    socket.on("getEmergencyById", async (data) => {
+      try {
+        const emergency = await getEmergencyById(data);
+        socket.emit("emergencyById", emergency);
       } catch (error) {
         socket.emit("error", { message: error.message });
       }

@@ -1,4 +1,6 @@
 const authService = require("../services/authService");
+const volunteerService = require("../services/volunteerService");
+const emergencyService = require("../services/emergencyService");
 
 async function signUp(req, res) {
   try {
@@ -32,4 +34,14 @@ async function acceptEmergency(req, res) {
   }
 }
 
-module.exports = { signUp, signIn };
+async function getUser(req, res) {
+  try {
+    const user = await volunteerService.getUser(req.params.id);
+    console.log("User", user);
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+module.exports = { signUp, signIn, getUser };
