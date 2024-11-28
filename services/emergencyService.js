@@ -5,7 +5,7 @@ async function initiateEmergency(data) {
   try {
     const roomId = await createRoom();
     const emergency = await Emergency.create({ ...data, roomId });
-    console.log("Emergency created", emergency);
+    console.log("Emergency created", emergency.dataValues);
     return emergency;
   } catch (error) {
     console.error("Error creating emergency", error);

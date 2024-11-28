@@ -56,17 +56,13 @@ async function signIn({ email, password }) {
 }
 
 async function refreshToken({ refreshToken }) {
-  console.log("Refreshing token", refreshToken);
   const decoded = jwt.verify(refreshToken, authConfig.jwtSecret);
-  console.log("Decoded token", decoded);
   const user = await User.findByPk(decoded.id);
-  console.log("User", user);
   const newToken = jwt.sign(
     { id: user.id, role: user.role },
     authConfig.jwtSecret,
     { expiresIn: "1h" }
   );
-  console.log("New token", newToken);
 
   return newToken;
 }
