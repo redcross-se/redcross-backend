@@ -16,10 +16,13 @@ async function signUp({
     throw new Error("Registration key is required for non-user roles");
   }
 
+  let userRole = role;
+
   if (registrationKey) {
     const key = await RegistrationKey.findOne({
       where: { key: registrationKey, isUsed: false },
     });
+    userRole = key.dataValues.role;
     if (!key || key.role !== role) {
       throw new Error("Invalid or expired registration key");
     }
@@ -32,7 +35,7 @@ async function signUp({
     email,
     phoneNumber,
     password: hashedPassword,
-    role,
+    role: userRole,
   });
   return user;
 }
