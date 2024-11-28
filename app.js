@@ -4,6 +4,7 @@ const sequelize = require("./models");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const supervisorRoutes = require("./routes/supervisorRoutes");
+const branchesRoutes = require("./routes/BranchesRoutes");
 const passport = require("passport");
 require("./configs/passportConfig");
 const userRoutes = require("./routes/userRoutes");
@@ -40,6 +41,7 @@ app.use("/admin", adminRoutes);
 app.use("/supervisor", supervisorRoutes);
 app.use("/user", userRoutes);
 app.use("/volunteer", volunteerRoutes);
+app.use("/branches", branchesRoutes);
 
 app.use(passport.initialize());
 app.use(passport.session());
