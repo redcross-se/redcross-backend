@@ -5,6 +5,8 @@ const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const supervisorRoutes = require("./routes/supervisorRoutes");
 const branchesRoutes = require("./routes/BranchesRoutes");
+const applicantsRoutes = require("./routes/applicationsRoutes");
+const donationRoutes = require("./routes/donationRoutes");
 const passport = require("passport");
 require("./configs/passportConfig");
 const userRoutes = require("./routes/userRoutes");
@@ -42,6 +44,8 @@ app.use("/supervisor", supervisorRoutes);
 app.use("/user", userRoutes);
 app.use("/volunteer", volunteerRoutes);
 app.use("/branches", branchesRoutes);
+app.use("/applicants", applicantsRoutes);
+app.use("/donations", donationRoutes);
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -12,13 +12,12 @@ const branchController = {
 
   async addBranch(req, res) {
     try {
-      const { branch_number, name, location } = req.body;
-      console.log(req.body);
-      console.log(branch_number, name, location);
+      const { branch_number, name, location,longtitude,latitude } = req.body;
       if (!branch_number || !name || !location) {
         return res.status(400).json({ error: 'All fields are required' });
       }
-      const newBranch = await branchService.addBranch({ branch_number, name, location });
+      console.log(branch_number, name, location,longtitude,latitude);
+      const newBranch = await branchService.addBranch({ branch_number, name, location,longtitude,latitude });
       res.status(201).json(newBranch);
     } catch (error) {
       res.status(500).json({ error: error.message });

@@ -8,7 +8,7 @@ const Branch = sequelize.define("Branch", {
     autoIncrement: true,
   },
   branch_number:{
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER, 
     allowNull: false,
   },
   name: {
@@ -16,6 +16,14 @@ const Branch = sequelize.define("Branch", {
     allowNull: false,
   },
   location: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  longtitude: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  latitude: {
     type: DataTypes.STRING,
     allowNull: false,
   },
