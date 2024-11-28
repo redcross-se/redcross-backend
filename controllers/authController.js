@@ -10,10 +10,10 @@ async function signUp(req, res) {
   try {
     const user = await authService.signUp(req.body);
     await client.upsertUser({
-      id: user.dataValues.id,
+      id: user.dataValues.id.toString(),
       name: user.dataValues.fullName,
+      email: user.dataValues.email,
     });
-    console.log("User created in Streams");
     const token = client.createToken(user.dataValues.id.toString());
     res.status(201).json({ user, streamToken: token });
   } catch (error) {
