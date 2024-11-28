@@ -48,6 +48,9 @@ async function me(req, res) {
   const user = await authService.findUserByToken(
     req.headers.authorization.split(" ")[1]
   );
+  if (!user) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
   res.json(user);
 }
 

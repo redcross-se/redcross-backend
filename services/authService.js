@@ -71,9 +71,13 @@ async function refreshToken({ refreshToken }) {
 }
 
 async function findUserByToken(token) {
-  const decoded = jwt.verify(token, authConfig.jwtSecret);
-  const user = await User.findByPk(decoded.id);
-  return user;
+  try {
+    const decoded = jwt.verify(token, authConfig.jwtSecret);
+    const user = await User.findByPk(decoded.id);
+    return user;
+  } catch (error) {
+    return null;
+  }
 }
 
 module.exports = { signUp, signIn, refreshToken, findUserByToken };
