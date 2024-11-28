@@ -9,10 +9,11 @@ const client = StreamChat.getInstance(
 async function signUp(req, res) {
   try {
     const user = await authService.signUp(req.body);
-    awaitclient.upsertUser({
+    await client.upsertUser({
       id: user.dataValues.id,
       name: user.dataValues.fullName,
     });
+    console.log("User created in Streams");
     const token = client.createToken(user.dataValues.id.toString());
     res.status(201).json({ user, streamToken: token });
   } catch (error) {
@@ -22,10 +23,7 @@ async function signUp(req, res) {
 async function signIn(req, res) {
   try {
     const { user, token, refreshToken } = await authService.signIn(req.body);
-    console.log("User signed in");
-    console.log(user.dataValues.id);
     const streamToken = client.createToken(user.dataValues.id.toString());
-    console.log(streamToken);
     res.json({ user, token, refreshToken, streamToken });
   } catch (error) {
     res.status(400).json({ error: error.message });
