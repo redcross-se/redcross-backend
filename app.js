@@ -17,6 +17,7 @@ const volunteerRoutes = require("./routes/volunteerRoutes");
 const { setupSocket } = require("./controllers/emergencyController");
 const { setupVoiceCall } = require("./services/voiceCallService");
 const dotenv = require("dotenv");
+const requestRoutes = require("./routes/requestRoutes");
 const app = express();
 dotenv.config();
 
@@ -46,7 +47,7 @@ app.use("/volunteer", volunteerRoutes);
 app.use("/branches", branchesRoutes);
 app.use("/applicants", applicantsRoutes);
 app.use("/donations", donationRoutes);
-
+app.use("/requests", requestRoutes);
 app.use(passport.initialize());
 app.use(passport.session());
 
