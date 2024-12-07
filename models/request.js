@@ -7,7 +7,7 @@ const Request = sequelize.define("Request", {
     allowNull: false,
   },
   bloodTypes: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.JSON,
     allowNull: false,
   },
   urgency: {
