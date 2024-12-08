@@ -23,6 +23,9 @@ dotenv.config();
 
 app.use(express.json());
 
+//sync models
+sequelize.sync();
+
 app.use(
   session({
     secret: "your_secret_key",

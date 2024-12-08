@@ -28,10 +28,12 @@ async function acceptEmergency(data) {
 }
 
 async function dispatchAmbulance(data) {
+  console.log("Updating Emergency Dispatch");
   const emergency = await Emergency.update(
-    { status: "dispatched", branchId: data.branchId },
-    { where: { id: data.id } }
+    { status: "dispatched", branchId: data.branch.branch_id },
+    { where: { id: data.emergencyId } }
   );
+  console.log("Emergency Dispatched");
   return emergency;
 }
 
