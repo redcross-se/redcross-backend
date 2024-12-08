@@ -32,6 +32,15 @@ const Emergency = sequelize.define("Emergency", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  branchId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+    references: {
+      model: "Branches",
+      key: "id",
+    },
+  },
 });
 
 module.exports = Emergency;
