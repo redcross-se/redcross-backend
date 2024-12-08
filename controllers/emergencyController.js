@@ -69,7 +69,10 @@ function setupSocket(io) {
       try {
         console.log("Dispatch ambulance", data);
         const dispatchInfo = await dispatchAmbulance(data);
-        io.emit("ambulanceDispatched", dispatchInfo); // Notify user
+        io.emit("ambulanceDispatched", {
+          emergency: dispatchInfo.dataValues,
+          branch: data.branch,
+        }); // Notify user
       } catch (error) {
         socket.emit("error", { message: error.message });
       }
