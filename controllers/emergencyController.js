@@ -12,7 +12,6 @@ function setupSocket(io) {
   const initiatorPeerMap = {};
 
   io.on("connection", (socket) => {
-
     socket.on("registerResponderPeer", ({ peerId, emergencyId }) => {
       responderPeerMap[emergencyId] = peerId;
       console.log(
@@ -68,6 +67,7 @@ function setupSocket(io) {
 
     socket.on("dispatchAmbulance", async (data) => {
       try {
+        console.log("Dispatch ambulance", data);
         const dispatchInfo = await dispatchAmbulance(data);
         io.emit("ambulanceDispatched", dispatchInfo); // Notify user
       } catch (error) {
